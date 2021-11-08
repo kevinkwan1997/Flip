@@ -88,4 +88,10 @@ public class JdbcUserDao implements UserDao {
         user.setAuthorities("USER");
         return user;
     }
+
+	@Override
+	public Long getAccountIdByUserId(Long userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

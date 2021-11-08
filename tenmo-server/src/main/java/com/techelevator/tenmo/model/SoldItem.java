@@ -21,7 +21,7 @@ public class SoldItem {
 		this.itemName = itemName;
 		this.itemPriceListed = itemPriceListed;
 		this.itemPriceSold = itemPriceSold;
-		this.net = net;
+		this.net = this.itemPriceListed.subtract(this.itemPriceSold);
 		this.listDate = listDate;
 		this.soldDate = soldDate;
 	}
