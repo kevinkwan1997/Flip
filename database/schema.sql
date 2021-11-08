@@ -89,8 +89,10 @@ CREATE TABLE brands_to_look_for (
         brand_id int DEFAULT nextval('seq_brand_id'::regclass) NOT NULL,
         brand_desc varchar(32) NOT NULL,
         item_type_id int,
+        account_id int,
         CONSTRAINT PK_brand PRIMARY KEY (brand_id),
-        CONSTRAINT FK_item_type FOREIGN KEY (item_type_id) REFERENCES item_types (item_type_id)
+        CONSTRAINT FK_item_type FOREIGN KEY (item_type_id) REFERENCES item_types (item_type_id),
+        CONSTRAINT FK_account_id FOREIGN KEY (account_id) REFERENCES accounts(account_id)
 );
 
 CREATE TABLE items (
