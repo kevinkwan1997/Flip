@@ -1,24 +1,27 @@
 BEGIN TRANSACTION;
 
-DROP TABLE IF EXISTS transfers;
+DROP TABLE IF EXISTS brands_to_look_for;
+DROP TABLE IF EXISTS sold_items;
+DROP TABLE IF EXISTS items;
 DROP TABLE IF EXISTS accounts;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS transfer_types;
-DROP TABLE IF EXISTS transfer_statuses;
+DROP TABLE IF EXISTS item_types;
+DROP TABLE IF EXISTS item_statuses;
 
-DROP SEQUENCE IF EXISTS seq_transfer_type_id;
-DROP SEQUENCE IF EXISTS seq_transfer_status_id;
+DROP SEQUENCE IF EXISTS seq_item_type_id;
+DROP SEQUENCE IF EXISTS seq_item_status_id;
 DROP SEQUENCE IF EXISTS seq_user_id;
 DROP SEQUENCE IF EXISTS seq_account_id;
-DROP SEQUENCE IF EXISTS seq_transfer_id;
+DROP SEQUENCE IF EXISTS seq_item_id;
+DROP SEQUENCE IF EXISTS seq_brand_id;
 
-CREATE SEQUENCE seq_transfer_type_id
+CREATE SEQUENCE seq_item_type_id
   INCREMENT BY 1
   NO MAXVALUE
   NO MINVALUE
   CACHE 1;
 
-CREATE SEQUENCE seq_transfer_status_id
+CREATE SEQUENCE seq_item_status_id
   INCREMENT BY 1
   NO MAXVALUE
   NO MINVALUE
@@ -38,7 +41,15 @@ CREATE SEQUENCE seq_account_id
   NO MINVALUE
   CACHE 1;
 
-CREATE SEQUENCE seq_transfer_id
+CREATE SEQUENCE seq_brand_id
+  INCREMENT BY 1
+  START WITH 4001
+  NO MAXVALUE
+  NO MINVALUE
+  CACHE 1;  
+
+
+CREATE SEQUENCE seq_item_id
   INCREMENT BY 1
   START WITH 3001
   NO MAXVALUE
@@ -46,16 +57,16 @@ CREATE SEQUENCE seq_transfer_id
   CACHE 1;
 
 
-CREATE TABLE transfer_types (
-	transfer_type_id int DEFAULT nextval('seq_transfer_type_id'::regclass) NOT NULL,
-	transfer_type_desc varchar(10) NOT NULL,
-	CONSTRAINT PK_transfer_types PRIMARY KEY (transfer_type_id)
+CREATE TABLE item_types (
+	item_type_id int DEFAULT nextval('seq_item_type_id'::regclass) NOT NULL,
+	item_type_desc varchar(32) NOT NULL,
+	CONSTRAINT PK_item_types PRIMARY KEY (item_type_id)
 );
 
-CREATE TABLE transfer_statuses (
-	transfer_status_id int DEFAULT nextval('seq_transfer_status_id'::regclass) NOT NULL,
-	transfer_status_desc varchar(10) NOT NULL,
-	CONSTRAINT PK_transfer_statuses PRIMARY KEY (transfer_status_id)
+CREATE TABLE item_statuses (
+	item_status_id int DEFAULT nextval('seq_item_status_id'::regclass) NOT NULL,
+	item_status_desc varchar(10) NOT NULL,
+	CONSTRAINT PK_item_statuses PRIMARY KEY (item_status_id)
 );
 
 CREATE TABLE users (
@@ -74,28 +85,60 @@ CREATE TABLE accounts (
 	CONSTRAINT FK_accounts_user FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
-CREATE TABLE transfers (
-	transfer_id int DEFAULT nextval('seq_transfer_id'::regclass) NOT NULL,
-	transfer_type_id int NOT NULL,
-	transfer_status_id int NOT NULL,
-	account_from int NOT NULL,
-	account_to int NOT NULL,
-	amount decimal(13, 2) NOT NULL,
-	CONSTRAINT PK_transfers PRIMARY KEY (transfer_id),
-	CONSTRAINT FK_transfers_accounts_from FOREIGN KEY (account_from) REFERENCES accounts (account_id),
-	CONSTRAINT FK_transfers_accounts_to FOREIGN KEY (account_to) REFERENCES accounts (account_id),
-	CONSTRAINT FK_transfers_transfer_statuses FOREIGN KEY (transfer_status_id) REFERENCES transfer_statuses (transfer_status_id),
-	CONSTRAINT FK_transfers_transfer_types FOREIGN KEY (transfer_type_id) REFERENCES transfer_types (transfer_type_id),
-	CONSTRAINT CK_transfers_not_same_account CHECK  ((account_from<>account_to)),
-	CONSTRAINT CK_transfers_amount_gt_0 CHECK ((amount>0))
+CREATE TABLE brands_to_look_for (
+        brand_id int DEFAULT nextval('seq_brand_id'::regclass) NOT NULL,
+        brand_desc varchar(32) NOT NULL,
+        item_type_id int,
+        CONSTRAINT PK_brand PRIMARY KEY (brand_id),
+        CONSTRAINT FK_item_type FOREIGN KEY (item_type_id) REFERENCES item_types (item_type_id)
+);
+
+CREATE TABLE items (
+	item_id int DEFAULT nextval('seq_item_id'::regclass) NOT NULL,
+	item_brand varchar(64),
+	gender varchar(32),
+	item_name varchar(128) NOT NULL,
+	item_type_id int NOT NULL,
+	price decimal(13, 2) NOT NULL,
+	price_listed decimal(13, 2) NOT NULL,
+	item_desc varchar(1024) NOT NULL,
+	item_status_id int NOT NULL,
+	account_id int NOT NULL,
+	list_date date NOT NULL,
+	
+	CONSTRAINT PK_items PRIMARY KEY (item_id),
+	CONSTRAINT FK_item_account_id FOREIGN KEY (account_id) REFERENCES accounts (account_id),
+	CONSTRAINT FK_items_item_statuses FOREIGN KEY (item_status_id) REFERENCES item_statuses (item_status_id),
+	CONSTRAINT FK_items_item_types FOREIGN KEY (item_type_id) REFERENCES item_types (item_type_id),
+	CONSTRAINT CK_item_price_gt_0 CHECK ((price>0))
+);
+
+CREATE TABLE sold_items (
+        item_id int REFERENCES items(item_id),
+        account_id int REFERENCES accounts(account_id),
+        item_name varchar(128),
+        item_price_listed decimal(13, 2) NOT NULL,
+        item_price_sold decimal(13, 2) NOT NULL,
+        net decimal(13, 2) NOT NULL,
+        list_date date NOT NULL,
+        sold_date date NOT NULL,
+        
+        CONSTRAINT PK_item_account PRIMARY KEY (item_id, account_id)
+        
 );
 
 
-INSERT INTO transfer_statuses (transfer_status_desc) VALUES ('Pending');
-INSERT INTO transfer_statuses (transfer_status_desc) VALUES ('Approved');
-INSERT INTO transfer_statuses (transfer_status_desc) VALUES ('Rejected');
+INSERT INTO item_statuses (item_status_desc) VALUES ('Unlisted');
+INSERT INTO item_statuses (item_status_desc) VALUES ('Listed');
 
-INSERT INTO transfer_types (transfer_type_desc) VALUES ('Request');
-INSERT INTO transfer_types (transfer_type_desc) VALUES ('Send');
+INSERT INTO item_types (item_type_desc) VALUES ('Misc');
+INSERT INTO item_types (item_type_desc) VALUES ('Electronics');
+INSERT INTO item_types (item_type_desc) VALUES ('Clothing');
+INSERT INTO item_types (item_type_desc) VALUES ('Furniture');
+INSERT INTO item_types (item_type_desc) VALUES ('China');
+INSERT INTO item_types (item_type_desc) VALUES ('Jewelry');
+INSERT INTO item_types (item_type_desc) VALUES ('Music');
+INSERT INTO item_types (item_type_desc) VALUES ('Literature');
+
 
 COMMIT TRANSACTION;

@@ -1,0 +1,38 @@
+Flip
+
+Description: Flip is an application for logging and accounting your merchandise that you flip.
+
+Tools: Java(Spring Boot), PostgreSQL database, React front end
+
+MVP: This app should have the ability to: 
+	
+
+
+Database
+
+Tables:
+	accounts: account_id, user_id, balance
+	users: user_id, username password
+	item_statuses: status_type_id, status_desc
+	item_types: item_type_id, type_desc
+	items: 
+		item_id, 
+		item_brand,
+		gender,
+		item_name NOT NULL,
+		item_type_id(REF item_types.item_type_id), 
+		item_price NOT NULL, 
+		item_price_listed NOT NULL,
+		item_description, 
+		account_id(REF accounts.account_id), 
+		item_status_id (REF item_statuses.status_type_id) 
+		list_date
+	sold_items: 
+		sold_item_id (REF items.item_id)
+		account_id (REF accounts.account_id)
+		item_price_listed NOT NULL,
+		item_price_sold_at NOT NULL,
+		net NOT NULL
+		listed_date
+		sold_date
+	
