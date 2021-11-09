@@ -67,6 +67,16 @@ public class ItemController {
 		
 	}
 	
+	@RequestMapping(value="/{id}", method = RequestMethod.DELETE) 
+	public boolean deleteItem(@PathVariable @Valid Long id) {
+		try {
+			itemDao.deleteItem(id);
+			return true;
+		} catch(Exception e) {
+			e.getMessage();
+			return false;
+		}
+	}
 	
 	//Retrieves account information for current logged in user
 	private Account getAccountFromPrincipal(Principal principal) {

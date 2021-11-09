@@ -68,21 +68,87 @@ public class JdbcItemDao implements ItemDao {
 	@Override
 	public Item updateItem(Item item, Long itemId) {
 		Item updateRequestItem = checkNullReturnOriginalProperties(item);
-		String sql = "UPDATE items SET item_name = ?, item_desc = ?, price = ? WHERE item_id = ?";
-		int id = jdbcTemplate.update(sql, item.getItemName(), item.getItemDesc(), item.getPrice(), itemId);
+		String sql = getSql(updateRequestItem);
+		int id = runCorrectUpdate(sql, updateRequestItem, itemId);
 		
 		return getItemById(itemId);
 	}
 	
-	//Takes in an item and checks for null values in request, and replaces them with the original values before updating
 	
+	//runs correct jdbcTemplate update statement depending on parameters provided
+	public int runCorrectUpdate(String sql, Item item, Long itemId) {
+		int id = 0;
+		boolean noParams = item.getItemName() == null && item.getItemDesc() == null && item.getPrice() == null;
+		boolean allParams = item.getItemName() != null && item.getItemDesc() != null && item.getPrice() != null;
+		boolean nameAndDesc = item.getItemName() != null && item.getItemDesc() != null && item.getPrice() == null;
+		boolean nameAndPrice = item.getItemName() != null && item.getItemDesc() == null && item.getPrice() != null;
+		boolean descAndPrice = item.getItemName() == null && item.getItemDesc() != null && item.getPrice() != null;
+		boolean nameOnly = item.getItemName() != null && item.getItemDesc() == null && item.getPrice() == null;
+		boolean descOnly = item.getItemName() == null && item.getItemDesc() != null && item.getPrice() == null;
+		boolean priceOnly = item.getItemName() == null && item.getItemDesc() == null && item.getPrice() != null;
+		if(allParams) {
+			id = jdbcTemplate.update(sql, item.getItemName(), item.getItemDesc(), item.getPrice(), itemId);
+		} else if (nameAndDesc) {
+			id = jdbcTemplate.update(sql, item.getItemName(), item.getItemDesc(), itemId);
+		} else if (nameAndPrice) {
+			id = jdbcTemplate.update(sql, item.getItemName(), item.getPrice(), itemId);
+		} else if (descAndPrice) {
+			id = jdbcTemplate.update(sql, item.getItemDesc(), item.getPrice(), itemId);
+		} else if (nameOnly) {
+			id = jdbcTemplate.update(sql, item.getItemName(), itemId);
+		} else if (descOnly) {
+			id = jdbcTemplate.update(sql, item.getItemDesc(), itemId);
+		} else if (priceOnly) {
+			id = jdbcTemplate.update(sql, item.getPrice(), itemId);
+		}
+		return id;
+	}
+	
+	//Takes parameters of request item and returns the correct SQL statement
+	public String getSql(Item item) {
+		String sql = null;
+		boolean noParams = item.getItemName() == null && item.getItemDesc() == null && item.getPrice() == null;
+		boolean allParams = item.getItemName() != null && item.getItemDesc() != null && item.getPrice() != null;
+		boolean nameAndDesc = item.getItemName() != null && item.getItemDesc() != null && item.getPrice() == null;
+		boolean nameAndPrice = item.getItemName() != null && item.getItemDesc() == null && item.getPrice() != null;
+		boolean descAndPrice = item.getItemName() == null && item.getItemDesc() != null && item.getPrice() != null;
+		boolean nameOnly = item.getItemName() != null && item.getItemDesc() == null && item.getPrice() == null;
+		boolean descOnly = item.getItemName() == null && item.getItemDesc() != null && item.getPrice() == null;
+		boolean priceOnly = item.getItemName() == null && item.getItemDesc() == null && item.getPrice() != null;
+		if(allParams) {
+			sql = "UPDATE items SET item_name = ?, item_desc = ?, price = ? WHERE item_id = ?";
+		} else if (nameAndDesc) {
+			sql = "UPDATE items SET item_name = ?, item_desc = ? WHERE item_id = ?";
+		} else if (nameAndPrice) {
+			sql = "UPDATE items SET item_name = ?, price = ? WHERE item_id = ?";
+		} else if (descAndPrice) {
+			sql = "UPDATE items SET item_desc = ?, price = ? WHERE item_id = ?";
+		} else if (nameOnly) {
+			sql = "UPDATE items SET item_name = ? WHERE item_id = ?";
+		} else if (descOnly) {
+			sql = "UPDATE items SET item_desc = ? WHERE item_id = ?";
+		} else if (priceOnly) {
+			sql = "UPDATE items SET price = ? WHERE item_id = ?";
+		}
+		return sql;
+		
+	}
+	
+	//Takes in an item and checks for null values in request, and replaces them with the original values before updating	
 	public Item checkNullReturnOriginalProperties(Item item) {
 		Item originalItem = getItemById(item.getItemId());
-		String[] original = {originalItem.getItemName(), originalItem.getItemDesc(), originalItem.getPrice().toString()};
+		String price = originalItem.getPrice().toString();
+		if(item.getPrice() != null) {
+			price = item.getPrice().toString();
+		}
+		String[] original = {originalItem.getItemName(), originalItem.getItemDesc(), price};
 		
 		String itemName = item.getItemName();
 		String itemDesc = item.getItemDesc();
-		String currPrice = item.getPrice().toString();
+		String currPrice = originalItem.getPrice().toString();
+		if(item.getPrice() != null) {
+			currPrice = item.getPrice().toString();
+		}
 		String[] arr = {itemName, itemDesc, currPrice};
 		
 		for(int i = 0; i < arr.length; i++) {
@@ -107,9 +173,9 @@ public class JdbcItemDao implements ItemDao {
 	}
 
 	@Override
-	public void deleteItem(Item item) {
+	public void deleteItem(Long itemId) {
 		String sql = "DELETE FROM items WHERE item_id = ?";
-		jdbcTemplate.update(sql, item.getItemId());
+		jdbcTemplate.update(sql, itemId);
 	}
 	
 	public Item mapItem(SqlRowSet rs) {

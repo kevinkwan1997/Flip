@@ -15,6 +15,6 @@ public interface ItemDao {
 	
 	Item changeStatus(Item item);
 	
-	void deleteItem(Item item);
+	void deleteItem(Long itemId);
 
 }
