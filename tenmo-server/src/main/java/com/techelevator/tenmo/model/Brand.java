@@ -8,7 +8,6 @@ public class Brand {
 	private Long accountId;
 	
 	public Brand(Long brandId, String brandDesc, Long itemTypeId, Long accountId) {
-		super();
 		this.brandId = brandId;
 		this.brandDesc = brandDesc;
 		this.itemTypeId = itemTypeId;
