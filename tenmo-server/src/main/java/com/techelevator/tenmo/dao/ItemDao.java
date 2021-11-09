@@ -7,10 +7,14 @@ public interface ItemDao {
 	
 	Item addItem(Item item);
 	
+	Item getItemById(Long itemId);
+	
 	List<Item> getAllItemsByAccountId(Long accountId);
 	
-	Item updateItem(Item item);
+	Item updateItem(Item item, Long itemId);
 	
-	boolean deleteItem(Item item);
+	Item changeStatus(Item item);
+	
+	void deleteItem(Item item);
 
 }

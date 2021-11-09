@@ -3,9 +3,11 @@ package com.techelevator.tenmo.dao;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import com.techelevator.tenmo.model.SoldItem;
 
+@Component
 public class JdbcSoldItemDao implements SoldItemDao {
 	
 	private JdbcTemplate jdbcTemplate;

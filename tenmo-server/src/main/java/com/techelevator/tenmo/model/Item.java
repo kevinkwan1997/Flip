@@ -34,6 +34,17 @@ public class Item {
 		this.listDate = listDate;
 	}
 	
+	public Item(Long itemId, String itemName, String itemDesc, BigDecimal price) {
+		this.itemId = itemId;
+		this.itemName = itemName;
+		this.itemDesc = itemDesc;
+		this.price = price;
+	}
+	
+	public Item() {
+		
+	}
+	
 	public Long getItemId() {
 		return itemId;
 	}

@@ -142,5 +142,9 @@ INSERT INTO item_types (item_type_desc) VALUES ('Jewelry');
 INSERT INTO item_types (item_type_desc) VALUES ('Music');
 INSERT INTO item_types (item_type_desc) VALUES ('Literature');
 
+SELECT * FROM items WHERE account_id = 1001;
+
+INSERT INTO items (item_brand, item_name, item_type_id, price, price_listed, item_desc, item_status_id, account_id, list_date)
+VALUES ('Motorola', 'Razor', 2, 150.99, 150.99, 'Flip phone', 1, 2001, '09/01/2021');
 
 COMMIT TRANSACTION;

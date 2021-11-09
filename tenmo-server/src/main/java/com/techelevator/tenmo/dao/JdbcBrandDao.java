@@ -1,9 +1,11 @@
 package com.techelevator.tenmo.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import com.techelevator.tenmo.model.Brand;
 
+@Component
 public class JdbcBrandDao implements BrandDao {
 	
 	private JdbcTemplate jdbcTemplate;
