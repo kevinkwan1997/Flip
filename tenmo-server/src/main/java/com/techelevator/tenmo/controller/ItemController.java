@@ -67,6 +67,12 @@ public class ItemController {
 		
 	}
 	
+	@RequestMapping(value="/status/{id}", method = RequestMethod.PUT)
+	public Item changeStatus(@PathVariable @Valid Long id, Principal principal) {
+		Item item = getItemById(principal, id);
+		return itemDao.changeStatus(item);
+	}
+	
 	@RequestMapping(value="/{id}", method = RequestMethod.DELETE) 
 	public boolean deleteItem(@PathVariable @Valid Long id) {
 		try {

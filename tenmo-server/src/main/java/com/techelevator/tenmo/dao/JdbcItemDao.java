@@ -74,8 +74,27 @@ public class JdbcItemDao implements ItemDao {
 		return getItemById(itemId);
 	}
 	
+	@Override
+	public Item changeStatus(Item item) {
+		String sql = "UPDATE items SET item_status_id = ? WHERE item_id = ?";
+		int rs = 0;
+		if(item.getItemStatusId() == 1) {
+			rs = jdbcTemplate.update(sql, 2, item.getItemId());
+		} else {
+			rs = jdbcTemplate.update(sql, 1, item.getItemId());
+		}
+		return getItemById(new Long(rs));
+	}
+
+	@Override
+	public void deleteItem(Long itemId) {
+		String sql = "DELETE FROM items WHERE item_id = ?";
+		jdbcTemplate.update(sql, itemId);
+	}
 	
-	//runs correct jdbcTemplate update statement depending on parameters provided
+	/*Helper methods*/
+	
+	//runs correct jdbcTemplate update depending on given attributes
 	public int runCorrectUpdate(String sql, Item item, Long itemId) {
 		int id = 0;
 		boolean noParams = item.getItemName() == null && item.getItemDesc() == null && item.getPrice() == null;
@@ -158,24 +177,6 @@ public class JdbcItemDao implements ItemDao {
 		}
 		return new Item(originalItem.getItemId(), arr[0], arr[1], new BigDecimal(arr[2]));
 		
-	}
-
-	@Override
-	public Item changeStatus(Item item) {
-		String sql = "UPDATE items SET item_status_id = ? WHERE item_id = ?";
-		int rs = 0;
-		if(item.getItemStatusId() == 1) {
-			rs = jdbcTemplate.update(sql, 2, item.getItemId());
-		} else {
-			rs = jdbcTemplate.update(sql, 1, item.getItemId());
-		}
-		return getItemById(new Long(rs));
-	}
-
-	@Override
-	public void deleteItem(Long itemId) {
-		String sql = "DELETE FROM items WHERE item_id = ?";
-		jdbcTemplate.update(sql, itemId);
 	}
 	
 	public Item mapItem(SqlRowSet rs) {
