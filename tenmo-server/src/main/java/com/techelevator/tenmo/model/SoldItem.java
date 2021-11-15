@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 public class SoldItem {
 	
+	private Long soldItemId;
 	private Long itemId;
 	private Long accountId;
 	private String itemName;
@@ -14,16 +15,21 @@ public class SoldItem {
 	private LocalDate listDate;
 	private LocalDate soldDate;
 	
-	public SoldItem(Long itemId, Long accountId, String itemName, BigDecimal itemPriceListed, BigDecimal itemPriceSold,
-			BigDecimal net, LocalDate listDate, LocalDate soldDate) {
+	public SoldItem(Long soldItemId, Long itemId, Long accountId, String itemName, BigDecimal itemPriceListed, BigDecimal itemPriceSold,
+			LocalDate listDate, LocalDate soldDate) {
+		this.soldItemId = soldItemId;
 		this.itemId = itemId;
 		this.accountId = accountId;
 		this.itemName = itemName;
 		this.itemPriceListed = itemPriceListed;
 		this.itemPriceSold = itemPriceSold;
-		this.net = this.itemPriceListed.subtract(this.itemPriceSold);
+		this.net = this.itemPriceSold.subtract(itemPriceListed);
 		this.listDate = listDate;
 		this.soldDate = soldDate;
+	}
+	
+	public long getSoldItemId() {
+		return soldItemId;
 	}
 
 	public Long getItemId() {

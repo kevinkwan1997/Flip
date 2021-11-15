@@ -20,7 +20,7 @@ public class JdbcBrandDao implements BrandDao {
 
 	@Override
 	public Brand addBrand(Brand brand) {
-		String sql = "INSERT INTO brands_to_look_for (brand_desc, item_type_id, account_id "
+		String sql = "INSERT INTO brands_to_look_for (brand_desc, item_type_id, account_id) "
 				+ "VALUES (?, ?, ?)";
 		Long id = (long) jdbcTemplate.update(sql, brand.getBrandDesc(), brand.getItemTypeId(), brand.getAccountId());
 		return getBrandById(id);
@@ -29,7 +29,7 @@ public class JdbcBrandDao implements BrandDao {
 	@Override
 	public Brand getBrandById(Long brandId) {
 		Brand brand = null;
-		String sql = "SELECT * FROM brands_to_look_for WHERE account_id = ?";
+		String sql = "SELECT * FROM brands_to_look_for WHERE brand_id = ?";
 		SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, brandId);
 		if (rs.next()) {
 			brand = mapBrand(rs);

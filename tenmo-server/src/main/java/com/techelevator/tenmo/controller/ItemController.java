@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import com.techelevator.tenmo.dao.SoldItemDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Item;
+import com.techelevator.tenmo.model.SoldItem;
 
 @RestController
 @RequestMapping("/items")
@@ -82,6 +84,17 @@ public class ItemController {
 			e.getMessage();
 			return false;
 		}
+	}
+	
+	@RequestMapping(value="/sell/{id}", method = RequestMethod.DELETE) 
+	public void markSold(@PathVariable @Valid Long id, Principal principal) {
+		Item item = itemDao.getItemById(id);
+		Account currAccount = getAccountFromPrincipal(principal);
+		LocalDate todayDate = LocalDate.now();
+		SoldItem soldItem = new SoldItem(null, item.getItemId(), item.getAccountId(), item.getItemName(), item.getPriceListed(), item.getPrice(), item.getListDate(),todayDate);
+		soldItemDao.addItem(soldItem);
+		itemDao.deleteItem(id);
+
 	}
 	
 	//Retrieves account information for current logged in user

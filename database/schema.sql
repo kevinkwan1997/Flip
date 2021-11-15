@@ -14,6 +14,7 @@ DROP SEQUENCE IF EXISTS seq_user_id;
 DROP SEQUENCE IF EXISTS seq_account_id;
 DROP SEQUENCE IF EXISTS seq_item_id;
 DROP SEQUENCE IF EXISTS seq_brand_id;
+DROP SEQUENCE IF EXISTS seq_sold_item_id;
 
 CREATE SEQUENCE seq_item_type_id
   INCREMENT BY 1
@@ -52,6 +53,13 @@ CREATE SEQUENCE seq_brand_id
 CREATE SEQUENCE seq_item_id
   INCREMENT BY 1
   START WITH 3001
+  NO MAXVALUE
+  NO MINVALUE
+  CACHE 1;
+  
+CREATE SEQUENCE seq_sold_item_id
+  INCREMENT BY 1
+  START WITH 5001
   NO MAXVALUE
   NO MINVALUE
   CACHE 1;
@@ -116,6 +124,7 @@ CREATE TABLE items (
 );
 
 CREATE TABLE sold_items (
+        sold_item_id int DEFAULT nextval('seq_sold_item_id'::regclass) NOT NULL,
         item_id int REFERENCES items(item_id),
         account_id int REFERENCES accounts(account_id),
         item_name varchar(128),
@@ -125,7 +134,7 @@ CREATE TABLE sold_items (
         list_date date NOT NULL,
         sold_date date NOT NULL,
         
-        CONSTRAINT PK_item_account PRIMARY KEY (item_id, account_id)
+        CONSTRAINT PK_sold_item_id PRIMARY KEY (sold_item_id)
         
 );
 
@@ -141,10 +150,5 @@ INSERT INTO item_types (item_type_desc) VALUES ('China');
 INSERT INTO item_types (item_type_desc) VALUES ('Jewelry');
 INSERT INTO item_types (item_type_desc) VALUES ('Music');
 INSERT INTO item_types (item_type_desc) VALUES ('Literature');
-
-SELECT * FROM items WHERE account_id = 1001;
-
-INSERT INTO items (item_brand, item_name, item_type_id, price, price_listed, item_desc, item_status_id, account_id, list_date)
-VALUES ('Motorola', 'Razor', 2, 150.99, 150.99, 'Flip phone', 1, 2001, '09/01/2021');
 
 COMMIT TRANSACTION;
