@@ -12,7 +12,9 @@ Back end is fully functional, but the front end is not.
 You will need to run the create.sh script to create the database, and grant privileges
 ### Server
 To execute,  Open the project in your IDE, and run it as a Spring Boot App
+---
 Alternatively, use the Spring Boot Maven plugin and use: 
+---
 ---
 mvn spring-boot:run 
 ---
