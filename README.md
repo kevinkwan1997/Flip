@@ -1,6 +1,6 @@
 # Flip
 
-Flip is an application that allows you to log your thrifts and flips. 
+Flip is an application that allows you to log your thrifts and flips. It allows a user to register and enter items they've acquired or listed to log sales. The applicaiton also will keep history of sales, allow user to save brands they're looking for, and give monthly metrics
 
 ## Project Status
 
