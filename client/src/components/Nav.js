@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container'
 
 const NavPrimary = () => {
     return (
+      <div className="navbar">
         <Navbar bg="primary" variant="dark">
         <Container>
         <Navbar.Brand href="#home">Logo</Navbar.Brand>
@@ -15,6 +16,8 @@ const NavPrimary = () => {
         </Nav>
         </Container>
       </Navbar>
+      </div>
+
     )
 }
 

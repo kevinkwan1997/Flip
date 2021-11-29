@@ -1,4 +1,107 @@
+html, body {margin: 0; height: 100%; overflow: hidden}
+
 .App {
     height: 100vh;
     background-color: #22232B;
+}
+
+.navbar {
+    width: 100%;
+    position: absolute;
+    top: 0;
+}
+.app-wrapper {
+    padding: 80px;
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    height: 100vh;
+    gap: 25px;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-areas: 
+        "inventory inventory brands brands"
+        "inventory inventory brands brands"
+        "inventory inventory history metrics"
+        "inventory inventory history metrics";
+}
+
+.inventory {
+    grid-area: inventory;
+    background-color: #E4E8D9;
+    height: 100%;
+    width: 100%;
+    border-radius: 8px;
+    display: grid;
+    padding: 10px;
+    overflow: scroll;
+    scrollbar-width: none;
+}
+
+.list-item {
+    background-color: #746557;
+    min-height: 200px;
+    border-radius: 5px;
+    padding: 4px;
+    color: #E4E8D9;
+    margin: 20px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.12), 
+    0 2px 2px rgba(0,0,0,0.12), 
+    0 4px 4px rgba(0,0,0,0.12), 
+    0 8px 8px rgba(0,0,0,0.12),
+    0 16px 16px rgba(0,0,0,0.12);
+    display: flex;
+    justify-content: space-between;
+}
+
+.item-brand {
+    font-size: 15px;
+    color: #E4E8D9;
+}
+
+.item-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.custom-btn {
+    color: #E4E8D9;
+}
+
+.brands {
+    grid-area: brands;
+    background-color: #E4E8D9;
+    height: 100%;
+    width: 100%;
+    border-radius: 8px;
+}
+
+.history {
+    grid-area: history;
+    background-color: #E4E8D9;
+    height: 100%;
+    width: 100%;
+    border-radius: 8px;
+}
+
+.metrics {
+    grid-area: metrics;
+    background-color: #E4E8D9;
+    height: 100%;
+    width: 100%;
+    border-radius: 8px;
+}
+
+.login-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form {
+    background-color: #E4E8D9;
+    padding: 80px;
+    border-radius: 8px;
 }
