@@ -22,7 +22,9 @@ mvn spring-boot:run
 ### Client
 
 Installation: 
+...
 npm install  OR npm i
+...
 
 To start the server:
 npm start
