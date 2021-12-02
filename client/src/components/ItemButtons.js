@@ -3,9 +3,9 @@ import Button  from 'react-bootstrap/Button'
 const ItemButtons = () => {
     return (
         <div className="item-buttons">
-            <Button variant='lightaccent' className='mark-sold custom-btn'>Mark Sold</Button>
-            <Button variant='lightaccent' className='custom-btn'>Edit</Button>
-            <Button variant='lightaccent' className='custom-btn'>Remove</Button>
+            <Button variant='primary' className='mark-sold custom-btn'>Mark Sold</Button>
+            <Button variant='primary' className='custom-btn'>Edit</Button>
+            <Button variant='darkaccent' className='custom-btn'>Remove</Button>
         </div>
     )
 }

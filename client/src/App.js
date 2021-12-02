@@ -159,13 +159,16 @@ function App() {
   return (
     <div className="App">
       <div className="wrapper">
-      <Nav username={ currentUser.username } />
       {(currentUser.username !== '') ? (
         <div className="app-wrapper">
+        <Nav username={ currentUser.username } /> 
+        <div className="app-container">
         <Inventory inventory={ inventory }/>
         <Brands brands={ brands } />
         <History />
         <Metrics />
+        </div>
+
       </div>
       ) : (
         <LoginForm Login={ Login } error={ error } />

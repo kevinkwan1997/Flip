@@ -1,27 +1,15 @@
-import '../custom.scss'
-import { Navbar, Nav } from 'react-bootstrap'
-import Container from 'react-bootstrap/Container'
-
 
 const NavPrimary = ({ username }) => {
     return (
       <div className="navbar">
-        <Navbar bg="primary" variant="dark">
-        <Container>
-        <Navbar.Brand href="#home">Logo</Navbar.Brand>
-        <Nav className="me-auto">
-          <Nav.Link href="#home">Home</Nav.Link>
-          <Nav.Link href="#features">Saved Brands</Nav.Link>
-          <Nav.Link href="#pricing">History</Nav.Link>
-          {(username !== '') ? (
-          <Nav.Link href="" id="intro">Welcome, { username }</Nav.Link>
-          ) : (
-            <span></span>
-          )}
 
-        </Nav>
-        </Container>
-      </Navbar>
+        <ul id="menu">
+          <h1 id="intro" >Flip</h1>
+          <li className="menu-item"><a className="menu-btn" href="home">Home</a></li>
+          <li className="menu-item"><a className="menu-btn" href="brand">Brand</a></li>
+          <li className="menu-item"><a className="menu-btn" href="history">History</a></li>
+          <li className="menu-item"><a className="menu-btn" href="about">About</a></li>
+        </ul>
       </div>
 
     )
