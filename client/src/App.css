@@ -5,6 +5,10 @@ html, body {margin: 0; height: 100%; overflow: hidden}
     background-color: #22232B;
 }
 
+#intro {
+    color: white;
+}
+
 .navbar {
     width: 100%;
     position: absolute;
@@ -12,17 +16,16 @@ html, body {margin: 0; height: 100%; overflow: hidden}
 }
 .app-wrapper {
     padding: 80px;
-    margin-top: 25px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     height: 100vh;
     gap: 25px;
     grid-template-rows: 1fr 1fr 1fr 1fr;
     grid-template-areas: 
-        "inventory inventory brands brands"
-        "inventory inventory brands brands"
-        "inventory inventory history metrics"
-        "inventory inventory history metrics";
+        "inventory inventory metrics metrics"
+        "inventory inventory metrics metrics"
+        "inventory inventory brands history"
+        "inventory inventory brands history";
 }
 
 .inventory {
@@ -105,3 +108,27 @@ html, body {margin: 0; height: 100%; overflow: hidden}
     padding: 80px;
     border-radius: 8px;
 }
+
+/* brands */ 
+.brands {
+    padding: 20px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+    grid-auto-rows: auto;
+
+}
+
+.brand {
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: white;
+    width: auto;
+    height: auto;
+}
+

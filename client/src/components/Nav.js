@@ -3,7 +3,7 @@ import { Navbar, Nav } from 'react-bootstrap'
 import Container from 'react-bootstrap/Container'
 
 
-const NavPrimary = () => {
+const NavPrimary = ({ username }) => {
     return (
       <div className="navbar">
         <Navbar bg="primary" variant="dark">
@@ -13,6 +13,12 @@ const NavPrimary = () => {
           <Nav.Link href="#home">Home</Nav.Link>
           <Nav.Link href="#features">Saved Brands</Nav.Link>
           <Nav.Link href="#pricing">History</Nav.Link>
+          {(username !== '') ? (
+          <Nav.Link href="" id="intro">Welcome, { username }</Nav.Link>
+          ) : (
+            <span></span>
+          )}
+
         </Nav>
         </Container>
       </Navbar>

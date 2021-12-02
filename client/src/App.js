@@ -10,26 +10,36 @@ import LoginForm from './components/LoginForm'
 import axios from 'axios'
 
 function App() {
-  const currentUser = {
-    username: '',
-    password: '',
-    token: ''
-  }
-
+  const [currentUser, setCurrentUser] = useState(
+    {
+      username: '',
+      token: ''
+    }
+  )
+  
   const [user, setUser] = useState({name: '', email: ''});
   const [error, setError] = useState('');
   
 
-  const Login = (loginDetails) => {
-    console.log(loginDetails);
-
-    axios.post('http://localhost:8080/login', JSON.stringify(loginDetails))
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-      }).catch(e => {
-        console.log(e);
+  const Login = async (loginDetails) => {
+    try {
+      const resp = await axios.post("http://localhost:8080/login", JSON.stringify(loginDetails), {
+        headers: { 
+          'Content-Type': "application/json",
+          'Accept': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+         },
+      }).then (resp => {
+        const currUser = {
+          username: loginDetails.username,
+          token: resp.data.token
+        }
+        
+        setCurrentUser( currUser )
       })
+    }catch(e) {
+      console.error(e.message);
+    }
   }
 
   const Logout = () => {
@@ -85,7 +95,7 @@ function App() {
       itemTypeId: 7,
       price: 560000.99,
       priceListed: 600000.00,
-      itemDesc: 'Stored in a cool, dry environment. Rarely played. Family heritage, but need gambling money',
+      itemDesc: 'Stored in a cool, dry environment. Rarely played. Family heirloom, but need gambling money',
       itemStatusId: 7,
       accountId: 2001,
       listDate: '07/22/2021'
@@ -98,7 +108,7 @@ function App() {
       itemTypeId: 7,
       price: 560000.99,
       priceListed: 600000.00,
-      itemDesc: 'Stored in a cool, dry environment. Rarely played. Family heritage, but need gambling money',
+      itemDesc: 'Stored in a cool, dry environment. Rarely played. Family heirloom, but need gambling money',
       itemStatusId: 7,
       accountId: 2001,
       listDate: '07/22/2021'
@@ -111,7 +121,7 @@ function App() {
       itemTypeId: 7,
       price: 560000.99,
       priceListed: 600000.00,
-      itemDesc: 'Stored in a cool, dry environment. Rarely played. Family heritage, but need gambling money',
+      itemDesc: 'Stored in a cool, dry environment. Rarely played. Family heirloom, but need gambling money',
       itemStatusId: 7,
       accountId: 2001,
       listDate: '07/22/2021'
@@ -133,8 +143,8 @@ function App() {
     },
     {
       id: 3,
-      brandDesc: 'Rare copies of books',
-      itemTypeId: 1,
+      brandDesc: 'Fender',
+      itemTypeId: 7,
       accountId: 2001
     },
     {
@@ -149,11 +159,11 @@ function App() {
   return (
     <div className="App">
       <div className="wrapper">
-      <Nav />
-      {(currentUser.username != '') ? (
+      <Nav username={ currentUser.username } />
+      {(currentUser.username !== '') ? (
         <div className="app-wrapper">
         <Inventory inventory={ inventory }/>
-        <Brands />
+        <Brands brands={ brands } />
         <History />
         <Metrics />
       </div>
