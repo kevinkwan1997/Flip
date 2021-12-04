@@ -4,7 +4,8 @@ const History = ({ history }) => {
     return (
         <div className='history'>
             {
-                history.map((soldItem) => {
+                
+                history.reverse().map((soldItem) => {
                     return <HistoryItem className="history-item" key={ soldItem.id }soldItem={ soldItem } />
                 })
             }  

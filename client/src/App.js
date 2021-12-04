@@ -1,7 +1,8 @@
 import Nav from './components/Nav'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import '../src/custom.scss'
 import '../src/App.css'
+import LoadingScreen from './components/LoadingScreen'
 import Inventory from './components/Inventory'
 import Brands from './components/Brands'
 import Metrics from './components/Metrics'
@@ -10,6 +11,9 @@ import LoginForm from './components/LoginForm'
 import axios from 'axios'
 
 function App() {
+
+  /* Authentication */
+
   const [currentUser, setCurrentUser] = useState(
     {
       username: '',
@@ -36,6 +40,7 @@ function App() {
         }
         
         setCurrentUser( currUser )
+        setLoading({loading: true})
       })
     }catch(e) {
       console.error(e.message);
@@ -170,6 +175,13 @@ function App() {
 
   ])
 
+  const [metrics, setMetrics] = useState ([
+    {
+      totalItemsSold: 0,
+      totalSales: 0,
+    }
+  ])
+
   // Add Item
 
   const addItem = (item) => {
@@ -216,6 +228,48 @@ function App() {
 
   }
 
+  // Get total items sold in history 
+
+  const getTotal = () => {
+    let total = 0;
+    history.forEach((item) => {
+      total += item.itemPriceSold
+    })
+    return total;
+  }
+
+  // Get total items listed and sold
+
+  const getOtherMetrics = () => {
+    let listedTotal = 0;
+    let soldTotal = 0;
+    inventory.forEach((item) => {
+      listedTotal+= 1;
+    })
+    history.forEach((item) => {
+      soldTotal +=1;
+    })
+
+    return { listedTotal, soldTotal }
+  }
+
+
+
+  // Loading screen 
+
+  const [loading, setLoading] = useState({
+    loading: false
+  })
+
+  const showLoadingScreen = () => {
+    this.useEffect(() => {
+      const timer = setTimeout(() => {
+        setLoading({loading: false})
+      }, 1500)
+    })
+
+  }
+
   return (
     <div className="App">
       <div className="wrapper">
@@ -226,11 +280,12 @@ function App() {
           <Inventory inventory={ inventory } deleteItem={ deleteItem } markSold={ markSold }/>
           <Brands brands={ brands } />
           <History history={ history }/>
-        <Metrics />
+          <Metrics getTotal={ getTotal } getOtherMetrics={ getOtherMetrics } />
         </div>
 
       </div>
       ) : (
+        
         <LoginForm Login={ Login } error={ error } />
       )}
 
