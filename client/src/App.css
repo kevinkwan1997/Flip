@@ -9,6 +9,7 @@ html, body {margin: 0; height: 100%; overflow: hidden}
     color: #e6e6e6;
 }
 
+
 /* Nav */
 
 .navbar {
@@ -81,7 +82,7 @@ html, body {margin: 0; height: 100%; overflow: hidden}
     border-radius: 8px;
     display: grid;
     padding: 10px;
-    overflow: scroll;
+    overflow-y: scroll;
     scrollbar-width: none;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -89,6 +90,7 @@ html, body {margin: 0; height: 100%; overflow: hidden}
 
 .list-item {
     background-color: #e6e6e6;
+    max-height: 50%;
     min-height: 200px;
     border-radius: 5px;
     padding: 4px;
@@ -100,12 +102,28 @@ html, body {margin: 0; height: 100%; overflow: hidden}
     0 8px 8px rgba(0,0,0,0.12),
     0 16px 16px rgba(0,0,0,0.12);
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
+    transition: 0.4s ease-out;
+    
+}
+
+.list-item:hover {
+    transform: translateY(-10px);
+
 }
 
 .item-brand {
     font-size: 15px;
     color: #e6e6e6;
+}
+
+.item-header {
+    font-size: 20px
+}
+
+.item-price {
+    font-size: 12px;
 }
 
 .item-buttons {
@@ -117,6 +135,18 @@ html, body {margin: 0; height: 100%; overflow: hidden}
 .custom-btn {
     transform: translateX(10px);
     color: #e6e6e6;
+    border: none;
+    border-radius: 0;
+    transition: 0.5s ease-in-out;
+}
+
+.custom-btn:hover {
+    color: white;
+    transform: translateX(15px);
+}
+
+.custom-btn:nth-child(3):hover {
+    background-color: red;
 }
 
 .brands {
@@ -133,6 +163,9 @@ html, body {margin: 0; height: 100%; overflow: hidden}
     height: 100%;
     width: 100%;
     border-radius: 8px;
+    padding: 20px;
+    overflow-y: scroll;
+    scrollbar-width: none;
 }
 
 .metrics {
@@ -181,6 +214,53 @@ html, body {margin: 0; height: 100%; overflow: hidden}
 }
 
 .brand-img {
-    max-width: 50%;
+    max-width: 75%;
+}
+
+/* History */
+
+.history-item {
+    width: 100%;
+    background-color: #4A844D;
+    padding: 10px;
+    border-radius: 8px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 4px;
+}
+
+.history-item p {
+    background-color: black;
+}
+
+@media screen and (max-width: 1366px) {
+    .inventory {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .brands {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 1080px) {
+    .inventory {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .brands {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Animations */
+
+
+@keyframes itemBtnOut {
+    to {
+        transform: translateX(0px);
+    }
 }
 

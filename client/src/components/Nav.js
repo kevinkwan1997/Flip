@@ -1,5 +1,5 @@
 
-const NavPrimary = ({ username }) => {
+const NavPrimary = ({ username, logout }) => {
     return (
       <div className="navbar">
 
@@ -9,6 +9,8 @@ const NavPrimary = ({ username }) => {
           <li className="menu-item"><a className="menu-btn" href="brand">Brand</a></li>
           <li className="menu-item"><a className="menu-btn" href="history">History</a></li>
           <li className="menu-item"><a className="menu-btn" href="about">About</a></li>
+          <li className="menu-item"><a className="menu-btn" href="about" onClick={() => logout}>Log out</a></li>
+          <h3 id="intro" >Welcome, { username }</h3>
         </ul>
       </div>
 

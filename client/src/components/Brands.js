@@ -5,7 +5,7 @@ const Brands = ({ brands }) => {
         <div className='brands'>
             {
                 brands.map((brand) => {
-                    return <Brand brand={ brand } />
+                    return <Brand brand={ brand } key={brand.id} />
                 })
             }
         </div>

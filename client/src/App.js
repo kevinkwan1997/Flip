@@ -43,7 +43,12 @@ function App() {
   }
 
   const Logout = () => {
-    console.log("Log out");
+    const user = {
+      username: '',
+      token: ''
+    }
+
+    setCurrentUser(user);
   }
 
   /* temporary data for layout */
@@ -153,19 +158,74 @@ function App() {
       itemTypeId: 3,
       accountId: 2001
     },
+    {
+      id: 5,
+      brandDesc: 'Samsung',
+      itemTypeId: 1,
+      accountId: 2001
+    },
   ])
-  
+
+  const [history, setHistory] = useState ([
+
+  ])
+
+  // Add Item
+
+  const addItem = (item) => {
+    const id = inventory[inventory.length].id + 1;
+    const newItem = { id, ...item }
+    setInventory([...inventory, newItem]);
+  }
+
+  // Edit Item
+
+  // Remove Item
+
+  const deleteItem = (id) => {
+    console.log(id);
+    setInventory(inventory.filter((item)=> item.id !== id))
+  }
+
+  // Get item from id => 
+
+  const getItemById = (id) => {
+    const index = inventory.findIndex((item) => item.id === id )
+    return inventory[index];
+  }
+
+  // Move item to history
+
+  const markSold = (id) => {
+    const today = Date.now
+    const item = getItemById(id); 
+    const historyItem = {
+      id: 1,
+      itemId: item.id,
+      accountId: item.accountId,
+      itemName: item.itemName,
+      itemPriceListed: item.priceListed,
+      itemPriceSold: item.price,
+      net: item.priceListed - item.price,
+      listDate: item.listDate,
+      soldDate: today
+    }
+    deleteItem(id);
+    setHistory([...history, historyItem]);
+    
+
+  }
 
   return (
     <div className="App">
       <div className="wrapper">
       {(currentUser.username !== '') ? (
         <div className="app-wrapper">
-        <Nav username={ currentUser.username } /> 
+        <Nav username={ currentUser.username } loguout={ Logout }/> 
         <div className="app-container">
-        <Inventory inventory={ inventory }/>
-        <Brands brands={ brands } />
-        <History />
+          <Inventory inventory={ inventory } deleteItem={ deleteItem } markSold={ markSold }/>
+          <Brands brands={ brands } />
+          <History history={ history }/>
         <Metrics />
         </div>
 

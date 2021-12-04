@@ -1,14 +1,13 @@
 import ItemButtons from './ItemButtons'
 
-const InventoryItem = ({ inventoryItem }) => {
+const InventoryItem = ({ inventoryItem, deleteItem, markSold }) => {
     return (
         <div className='list-item'>
             <div className="item-description">
-                <h3> { inventoryItem.itemName }  <span className="item-brand"> { inventoryItem.brand }</span> </h3>
-                <p> Current Price: { inventoryItem.price }</p>
-                <p> Listed Price: { inventoryItem.priceListed }</p>
+                <h4 className="item-header"> { inventoryItem.itemName }</h4>
+                <p className="item-price"> ${ inventoryItem.price } </p>
             </div>
-            <ItemButtons />
+            <ItemButtons deleteItem={ deleteItem } markSold={ markSold } itemId={ inventoryItem.id }  />
         </div> 
     )
 }

@@ -1,11 +1,11 @@
 import Button  from 'react-bootstrap/Button'
 
-const ItemButtons = () => {
+const ItemButtons = ({ deleteItem, itemId, markSold }) => {
     return (
         <div className="item-buttons">
-            <Button variant='primary' className='mark-sold custom-btn'>Mark Sold</Button>
-            <Button variant='primary' className='custom-btn'>Edit</Button>
-            <Button variant='darkaccent' className='custom-btn'>Remove</Button>
+            <Button variant='primary' className='mark-sold custom-btn' onClick={(e) => markSold(itemId)}>Mark Sold</Button>
+            <Button variant='darkaccent' className='custom-btn'>Edit</Button>
+            <Button variant='dark' className='custom-btn' onClick={(e) => deleteItem(itemId)}>Remove</Button>
         </div>
     )
 }
