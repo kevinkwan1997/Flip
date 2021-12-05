@@ -2,7 +2,7 @@ import Inventory from './Inventory'
 import Brands from './Brands'
 import Metrics from './Metrics'
 import History from './History'
-const Home = ({ inventory, brands, history, metric, setInventory, setHistory }) => {
+const Home = ({ inventory, brands, history, metric , setInventory, setHistory }) => {
       // Add Item
 
   const addItem = (item) => {

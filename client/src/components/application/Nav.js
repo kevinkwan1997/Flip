@@ -1,4 +1,4 @@
-import Logo from '../resources/logo.png'
+import Logo from '../../resources/logo.png'
 
 const NavPrimary = ({ username, logout }) => {
     return (

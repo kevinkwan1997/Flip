@@ -1,4 +1,4 @@
-import LogoService from '../LogoService'
+import LogoService from '../../LogoService'
 
 const Brand = ({ brand }) => {
 

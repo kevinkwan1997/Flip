@@ -1,12 +1,12 @@
-import Nav from './components/Nav'
+import Nav from './components/application/Nav'
 import { useState, useEffect } from 'react'
 import '../src/custom.scss'
 import '../src/App.css'
-import LoadingScreen from './components/LoadingScreen'
-import LoginForm from './components/LoginForm'
+import LoadingScreen from './components/application/LoadingScreen'
+import LoginForm from './components/application/LoginForm'
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Home from './components/Home'
+import Home from './components/home/Home'
 
 function App() {
 
@@ -198,6 +198,7 @@ function App() {
   return (
     <BrowserRouter >
       <div className="wrapper">
+      {(currentUser.username !== '') ? (
         <div className="app-wrapper">
         <Nav username={ currentUser.username } logout={ Logout }/> 
         <Routes>
@@ -213,6 +214,10 @@ function App() {
                 setHistory={ setHistory } />} />
         </Routes>
          </div>
+           ) : (
+        
+            <LoginForm Login={ Login } error={ error } />
+          )}
       </div>
     </BrowserRouter>
 
