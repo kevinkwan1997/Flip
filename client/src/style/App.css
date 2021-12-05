@@ -10,6 +10,13 @@ html, body {margin: 0; height: 100%; overflow: hidden}
     color: #e6e6e6;
 }
 
+.view-container {
+    width: 100%;
+    height: 100vh;
+    padding: 80px;
+    background-color: #f8f8f8;
+}
+
 
 /* Nav */
 

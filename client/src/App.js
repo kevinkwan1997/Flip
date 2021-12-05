@@ -3,13 +3,16 @@ import LoadingScreen from './components/application/LoadingScreen'
 import LoginForm from './components/application/LoginForm'
 
 import { useState, useEffect } from 'react'
-import '../src/custom.scss'
-import '../src/App.css'
+import '../src/style/custom.scss'
+import '../src/style/App.css'
+import '../src/style/Inventory.css'
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import Home from './components/home/Home'
 import FullItemView from './views/FullItemView'
+import BrandView from './views/BrandView'
+import HistoryView from './views/HistoryView'
 
 function App() {
 
@@ -216,6 +219,8 @@ function App() {
                 setInventory={ setInventory }
                 setHistory={ setHistory } />} />
           <Route path="/inventory" element={<FullItemView />} />
+          <Route path="/brands" element={<BrandView />} /> 
+          <Route path="/history" element={<BrandView />} /> 
         </Routes>
          </div>
            ) : (
