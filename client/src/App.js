@@ -1,12 +1,15 @@
 import Nav from './components/application/Nav'
+import LoadingScreen from './components/application/LoadingScreen'
+import LoginForm from './components/application/LoginForm'
+
 import { useState, useEffect } from 'react'
 import '../src/custom.scss'
 import '../src/App.css'
-import LoadingScreen from './components/application/LoadingScreen'
-import LoginForm from './components/application/LoginForm'
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
 import Home from './components/home/Home'
+import FullItemView from './views/FullItemView'
 
 function App() {
 
@@ -200,7 +203,7 @@ function App() {
       <div className="wrapper">
       {(currentUser.username !== '') ? (
         <div className="app-wrapper">
-        <Nav username={ currentUser.username } logout={ Logout }/> 
+        <Nav username={ currentUser.username } logout={ Logout } /> 
         <Routes>
           <Route 
             path="/" 
@@ -212,6 +215,7 @@ function App() {
                 metrics={ metrics } 
                 setInventory={ setInventory }
                 setHistory={ setHistory } />} />
+          <Route path="/inventory" element={<FullItemView />} />
         </Routes>
          </div>
            ) : (
