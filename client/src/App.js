@@ -191,6 +191,9 @@ function App() {
   const [loading, setLoading] = useState({
     loading: false
   })
+  
+
+  
 
   const showLoadingScreen = () => {
     this.useEffect(() => {
@@ -218,7 +221,7 @@ function App() {
                 metrics={ metrics } 
                 setInventory={ setInventory }
                 setHistory={ setHistory } />} />
-          <Route path="/inventory" element={<FullItemView />} />
+          <Route path="/inventory" element={<FullItemView inventory={ inventory } />} />
           <Route path="/brands" element={<BrandView />} /> 
           <Route path="/history" element={<BrandView />} /> 
         </Routes>

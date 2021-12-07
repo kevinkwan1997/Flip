@@ -1,9 +1,16 @@
 import React from 'react'
+import InventoryItemFull from '../components/inventory/InventoryItemFull'
 
-const FullItemView = () => {
+const FullItemView = ({ inventory, deleteItem, markSold }) => {
     return (
         <div className="view-container">
-            <div className="view-inner full-item-view"></div>
+            <div className="view-inner full-item-view">
+            {
+                    inventory.map((inventoryItem) => {
+                        return <InventoryItemFull key={ inventoryItem.id } inventoryItem={ inventoryItem } deleteItem={ deleteItem } markSold={ markSold } />
+                    })
+                }
+            </div>
         </div>
     )
 }
