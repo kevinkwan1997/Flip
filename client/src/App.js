@@ -6,6 +6,8 @@ import { useState, useEffect } from 'react'
 import '../src/style/custom.scss'
 import '../src/style/App.css'
 import '../src/style/Inventory.css'
+import '../src/style/Brand.css'
+import '../src/style/History.css'
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
@@ -17,6 +19,16 @@ import HistoryView from './views/HistoryView'
 function App() {
 
   /* Authentication */
+
+
+  // Will allow you to refrsh the page while keeping user logged in
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem('user');
+    if(loggedInUser) {
+      const currUser = loggedInUser
+      setCurrentUser(currUser);
+    }
+  }, [])
 
   const [currentUser, setCurrentUser] = useState(
     {
@@ -42,8 +54,8 @@ function App() {
           username: loginDetails.username,
           token: resp.data.token
         }
-        
         setCurrentUser( currUser )
+        localStorage.setItem('user', currUser)
         setLoading({loading: true})
       })
     }catch(e) {
@@ -56,7 +68,7 @@ function App() {
       username: '',
       token: ''
     }
-
+    localStorage.setItem('user', null)
     setCurrentUser(user);
   }
 
@@ -222,8 +234,8 @@ function App() {
                 setInventory={ setInventory }
                 setHistory={ setHistory } />} />
           <Route path="/inventory" element={<FullItemView inventory={ inventory } />} />
-          <Route path="/brands" element={<BrandView />} /> 
-          <Route path="/history" element={<BrandView />} /> 
+          <Route path="/brands" element={<BrandView brands={ brands } />} /> 
+          <Route path="/history" element={<HistoryView history={ history } />} /> 
         </Routes>
          </div>
            ) : (

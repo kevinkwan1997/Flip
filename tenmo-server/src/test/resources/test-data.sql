@@ -155,4 +155,4 @@ INSERT INTO accounts(user_id, balance) VALUES (1001, 2000.00);
 INSERT INTO items(item_brand, item_name, item_type_id, price, price_listed, item_desc, item_status_id, account_id, list_date) 
         VALUES ('Gucci', 'Bag', 3, 1199.99, 1250.99, 'Fake', 1, 2001, '09/03/2021');
         
-SELECT user_id FROM users WHERE username ILIKE 'test2';
+SELECT user_id FROM users WHERE username ILIKE ?;
