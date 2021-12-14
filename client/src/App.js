@@ -232,8 +232,8 @@ function App() {
          },
       }).then((resp) => {
         console.log('Success!');
-        console.log(resp);
-        setInventory([...inventory], item.item)
+        console.log(resp.data.itemId);
+        setInventory([...inventory], resp.data)
       })
     }catch(e){
       console.error(e);

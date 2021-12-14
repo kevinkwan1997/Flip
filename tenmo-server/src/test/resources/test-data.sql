@@ -137,7 +137,6 @@ CREATE TABLE sold_items (
         
 );
 
-
 INSERT INTO item_statuses (item_status_desc) VALUES ('Unlisted');
 INSERT INTO item_statuses (item_status_desc) VALUES ('Listed');
 

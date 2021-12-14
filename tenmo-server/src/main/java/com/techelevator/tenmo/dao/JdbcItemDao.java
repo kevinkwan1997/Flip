@@ -48,9 +48,13 @@ public class JdbcItemDao implements ItemDao {
 				item.getAccountId(), 
 				item.getListDate()
 				);
-		System.out.println(itemId);
-		Long longId = new Long(itemId);
-		return getItemById(longId)	;
+		String sql2 = "SELECT item_id FROM items ORDER BY item_id DESC LIMIT 1";
+		SqlRowSet result = jdbcTemplate.queryForRowSet(sql2);
+		Long id = 0L;
+		if(result.next()) {
+			id = result.getLong("item_id");
+		}
+		return getItemById(id);
 	}
 
 	@Override
