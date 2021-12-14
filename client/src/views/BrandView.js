@@ -6,7 +6,7 @@ const BrandView = ({ brands }) => {
             <div className="view-inner full-brand-view">
             {
                 brands.map((brand) => {
-                    return <BrandFull brand={ brand } key={brand.id} />
+                    return <BrandFull brand={ brand } key={brand.brandId} />
                 })
             }
             </div>

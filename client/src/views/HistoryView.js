@@ -7,7 +7,7 @@ const HistoryView = ({ history }) => {
             <div className="view-inner full-history-view">
                 {
                     history.map((soldItem) => {
-                        return <HistoryItem soldItem={ soldItem } />
+                        return <HistoryItem key={soldItem.soldItemId} soldItem={ soldItem } />
                     })
                 }
             </div>

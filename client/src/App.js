@@ -1,5 +1,4 @@
 import Nav from './components/application/Nav'
-import LoadingScreen from './components/application/LoadingScreen'
 import LoginForm from './components/application/LoginForm'
 
 import { useState, useEffect } from 'react'
@@ -19,6 +18,8 @@ import HistoryView from './views/HistoryView'
 import AddItemModal from './components/application/AddItemModal'
 import AddBrandModal from './components/application/AddNewBrandModal'
 
+import { Provider } from 'react';
+
 function App() {
 
   /* Authentication */
@@ -34,6 +35,7 @@ function App() {
       setCurrentUser(currUser);
       fetchInventory(JSON.parse(currUser).token);
       fetchBrands(JSON.parse(currUser).token);
+      fetchHistory(JSON.parse(currUser).token);
     }
   }, [])
 
@@ -109,6 +111,24 @@ function App() {
       }).then((resp) => {
         console.log(resp);
         setBrands(resp.data);
+      })
+    }catch(e) {
+      console.error(e);
+    }
+  }
+
+  const fetchHistory = (token) => {
+    try {
+      const resp = axios.get("http://localhost:8080/history", {
+        headers: {
+          'Content-Type': "application/json",
+          'Accept': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': `Bearer ${token}`
+        }
+      }).then((resp) => {
+        console.log(resp);
+        setHistory(resp.data);
       })
     }catch(e) {
       console.error(e);

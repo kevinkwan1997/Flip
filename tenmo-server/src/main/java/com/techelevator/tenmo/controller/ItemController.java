@@ -93,7 +93,7 @@ public class ItemController {
 		Item item = itemDao.getItemById(id);
 		Account currAccount = getAccountFromPrincipal(principal);
 		LocalDate todayDate = LocalDate.now();
-		SoldItem soldItem = new SoldItem(null, item.getItemId(), item.getAccountId(), item.getItemName(), item.getPriceListed(), item.getPrice(), item.getListDate(),todayDate);
+		SoldItem soldItem = new SoldItem(null, item.getItemId(), currAccount.getAccountId() , item.getItemName(), item.getPriceListed(), item.getPrice(), item.getListDate(),todayDate);
 		soldItemDao.addItem(soldItem);
 		itemDao.deleteItem(id);
 

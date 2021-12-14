@@ -7,7 +7,7 @@ const FullItemView = ({ inventory, deleteItem, markSold }) => {
             <div className="view-inner full-item-view">
             {
                     inventory.map((inventoryItem) => {
-                        return <InventoryItemFull key={ inventoryItem.id } inventoryItem={ inventoryItem } deleteItem={ deleteItem } markSold={ markSold } />
+                        return <InventoryItemFull key={ inventoryItem.itemId } inventoryItem={ inventoryItem } deleteItem={ deleteItem } markSold={ markSold } />
                     })
                 }
             </div>

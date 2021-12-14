@@ -33,19 +33,7 @@ const Home = ({ inventory, brands, history, metric , setInventory, setHistory })
     const date = new Date();
     const now = date.getDate();
     const item = getItemById(id); 
-    const historyItem = {
-      itemId: item.id,
-      accountId: item.accountId,
-      itemName: item.itemName,
-      itemPriceListed: item.priceListed,
-      itemPriceSold: item.price,
-      net: item.priceListed - item.price,
-      listDate: item.listDate,
-      soldDate: now
-    }
     deleteItem(id);
-    setHistory([...history, historyItem]);
-    
 
   }
 
