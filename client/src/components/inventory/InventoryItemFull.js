@@ -1,6 +1,5 @@
 import React from 'react'
 import ItemButtons from '../home/ItemButtons'
-import LogoService from '../../LogoService'
 
 const InventoryItemFull = ({ inventoryItem, deleteItem, markSold }) => {
     return (

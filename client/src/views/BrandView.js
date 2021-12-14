@@ -1,4 +1,3 @@
-import Brand from "../components/home/Brand"
 import BrandFull from "../components/brand/BrandFull"
 
 const BrandView = ({ brands }) => {

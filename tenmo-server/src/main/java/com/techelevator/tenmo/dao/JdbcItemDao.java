@@ -48,6 +48,7 @@ public class JdbcItemDao implements ItemDao {
 				item.getAccountId(), 
 				item.getListDate()
 				);
+		System.out.println(itemId);
 		Long longId = new Long(itemId);
 		return getItemById(longId)	;
 	}

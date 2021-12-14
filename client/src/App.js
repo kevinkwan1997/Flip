@@ -8,6 +8,7 @@ import '../src/style/App.css'
 import '../src/style/Inventory.css'
 import '../src/style/Brand.css'
 import '../src/style/History.css'
+import '../src/style/Modal.css'
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
@@ -15,6 +16,8 @@ import Home from './components/home/Home'
 import FullItemView from './views/FullItemView'
 import BrandView from './views/BrandView'
 import HistoryView from './views/HistoryView'
+import AddItemModal from './components/application/AddItemModal'
+import AddBrandModal from './components/application/AddNewBrandModal'
 
 function App() {
 
@@ -26,6 +29,7 @@ function App() {
     const loggedInUser = localStorage.getItem('user');
     if(loggedInUser) {
       const currUser = loggedInUser
+      console.log((currUser))
       setCurrentUser(currUser);
     }
   }, [])
@@ -55,7 +59,7 @@ function App() {
           token: resp.data.token
         }
         setCurrentUser( currUser )
-        localStorage.setItem('user', currUser)
+        localStorage.setItem('user', JSON.stringify(currUser))
         setLoading({loading: true})
       })
     }catch(e) {
@@ -68,7 +72,7 @@ function App() {
       username: '',
       token: ''
     }
-    localStorage.setItem('user', null)
+    localStorage.removeItem('user')
     setCurrentUser(user);
   }
 
@@ -203,10 +207,9 @@ function App() {
   const [loading, setLoading] = useState({
     loading: false
   })
-  
 
+  const [showModal, setShowModal] = useState(false)
   
-
   const showLoadingScreen = () => {
     this.useEffect(() => {
       const timer = setTimeout(() => {
@@ -216,12 +219,39 @@ function App() {
 
   }
 
+  const addItem = async (e, item) => {
+    e.preventDefault();
+    const user = JSON.parse(localStorage.getItem('user'))
+    try{
+      await axios.post('http://localhost:8080/items/add', JSON.stringify(item.item), {
+        headers: { 
+          'Content-Type': "application/json",
+          'Accept': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': `Bearer ${user.token}`
+         },
+      }).then((resp) => {
+        console.log('Success!');
+        console.log(resp);
+        setInventory([...inventory], item.item)
+      })
+    }catch(e){
+      console.error(e);
+    }
+    
+  }
+
   return (
     <BrowserRouter >
       <div className="wrapper">
       {(currentUser.username !== '') ? (
         <div className="app-wrapper">
-        <Nav username={ currentUser.username } logout={ Logout } /> 
+        <Nav username={ currentUser.username } logout={ Logout } setShowModal={ setShowModal } /> 
+        {(showModal) ? (
+          <AddItemModal addItem={ addItem } setShowModal={ setShowModal } />
+        ) : (
+          null
+        )}
         <Routes>
           <Route 
             path="/" 
@@ -237,6 +267,7 @@ function App() {
           <Route path="/brands" element={<BrandView brands={ brands } />} /> 
           <Route path="/history" element={<HistoryView history={ history } />} /> 
         </Routes>
+
          </div>
            ) : (
         

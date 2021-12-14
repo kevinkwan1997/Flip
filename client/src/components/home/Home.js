@@ -5,11 +5,11 @@ import History from './History'
 const Home = ({ inventory, brands, history, metric , setInventory, setHistory }) => {
       // Add Item
 
-  const addItem = (item) => {
-    const id = inventory[inventory.length].id + 1;
-    const newItem = { id, ...item }
-    setInventory([...inventory, newItem]);
-  }
+  // const addItem = (item) => {
+  //   const id = inventory[inventory.length].id + 1;
+  //   const newItem = { id, ...item }
+  //   setInventory([...inventory, newItem]);
+  // }
 
   // Edit Item
 

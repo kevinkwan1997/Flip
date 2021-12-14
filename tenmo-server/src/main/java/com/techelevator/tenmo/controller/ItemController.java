@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ import com.techelevator.tenmo.model.SoldItem;
 @RestController
 @RequestMapping("/items")
 @PreAuthorize("isAuthenticated()")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ItemController {
 	
 	private AccountDao accountDao;
@@ -53,10 +55,10 @@ public class ItemController {
 		return itemDao.getAllItemsByAccountId(account.getAccountId());
 	}
 	
-	@RequestMapping(value="", method = RequestMethod.POST) 
+	@CrossOrigin(origins = "http://localhost:3000")
+	@RequestMapping(value="/add", method = RequestMethod.POST) 
 	public Item addItem(@RequestBody Item item, Principal principal) {
 		Account account = getAccountFromPrincipal(principal);
-		
 		item.setAccountId(account.getAccountId());
 		
 		return itemDao.addItem(item);

@@ -21,7 +21,7 @@ public class TestConfig {
 	    private static final String DB_PORT =
 	            Objects.requireNonNullElse(System.getenv("DB_PORT"), "5432");
 	    private static final String DB_NAME =
-	            Objects.requireNonNullElse(System.getenv("DB_NAME"), "Testing");
+	            Objects.requireNonNullElse(System.getenv("DB_NAME"), "test");
 	    private static final String DB_USER =
 	            Objects.requireNonNullElse(System.getenv("DB_USER"), "postgres");
 	    private static final String DB_PASSWORD =
@@ -60,6 +60,12 @@ public class TestConfig {
 	    @PreDestroy
 	    public void cleanup() {
 	        if (adminDataSource != null) {
+	        	adminJdbcTemplate.queryForRowSet("SELECT \r\n"
+	        			+ "   pg_terminate_backend(pg_stat_activity.pid)\r\n"
+	        			+ "FROM pg_stat_activity\r\n"
+	        			+ "WHERE\r\n"
+	        			+ "   pg_stat_activity.datname = 'test'\r\n"
+	        			+ "AND pid <> pg_backend_pid()");
 	            adminJdbcTemplate.update("DROP DATABASE \"" + DB_NAME + "\";");
 	            adminDataSource.destroy();
 	        }
