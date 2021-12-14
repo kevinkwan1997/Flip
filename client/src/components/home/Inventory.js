@@ -5,7 +5,7 @@ const Inventory = ({ inventory, deleteItem, markSold }) => {
         <div className='inventory'>
                 {
                     inventory.map((inventoryItem) => {
-                        return <InventoryItem key={ inventoryItem.id } inventoryItem={ inventoryItem } deleteItem={ deleteItem } markSold={ markSold } />
+                        return <InventoryItem key={ inventoryItem.itemId } inventoryItem={ inventoryItem } deleteItem={ deleteItem } markSold={ markSold } />
                     })
                 }
         </div>

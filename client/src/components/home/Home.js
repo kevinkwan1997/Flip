@@ -30,10 +30,10 @@ const Home = ({ inventory, brands, history, metric , setInventory, setHistory })
   // Move item to history
 
   const markSold = (id) => {
-    const today = Date.now
+    const date = new Date();
+    const now = date.getDate();
     const item = getItemById(id); 
     const historyItem = {
-      id: 1,
       itemId: item.id,
       accountId: item.accountId,
       itemName: item.itemName,
@@ -41,7 +41,7 @@ const Home = ({ inventory, brands, history, metric , setInventory, setHistory })
       itemPriceSold: item.price,
       net: item.priceListed - item.price,
       listDate: item.listDate,
-      soldDate: today
+      soldDate: now
     }
     deleteItem(id);
     setHistory([...history, historyItem]);

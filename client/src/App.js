@@ -25,12 +25,15 @@ function App() {
 
 
   // Will allow you to refrsh the page while keeping user logged in
+  // Once current user is set, retrieves inventory, brand and history
   useEffect(() => {
     const loggedInUser = localStorage.getItem('user');
     if(loggedInUser) {
       const currUser = loggedInUser
-      console.log((currUser))
+      console.log(JSON.parse(currUser).token)
       setCurrentUser(currUser);
+      fetchInventory(JSON.parse(currUser).token);
+      fetchBrands(JSON.parse(currUser).token);
     }
   }, [])
 
@@ -76,120 +79,69 @@ function App() {
     setCurrentUser(user);
   }
 
-  /* temporary data for layout */
-  const [inventory, setInventory] = useState([
-    {
-      id: 1,
-      brand: 'Prada',
-      gender: 'Female',
-      itemName: 'purse',
-      itemTypeId: 3,
-      price: 599.99,
-      priceListed: 650.99,
-      itemDesc: 'Used once!',
-      itemStatusId: 1,
-      accountId: 2001,
-      listDate: '09/20/2020'
-    },
-    {
-      id: 2,
-      brand: 'Sony',
-      gender: 'N/A',
-      itemName: 'PlayStation 3',
-      itemTypeId: 2,
-      price: 150.99,
-      priceListed: 170.99,
-      itemDesc: 'Very good condition.',
-      itemStatusId: 1,
-      accountId: 2001,
-      listDate: '10/20/2020'
-    },
-    {
-      id: 3,
-      brand: 'Nike',
-      gender: 'Unisex',
-      itemName: 'Socks',
-      itemTypeId: 3,
-      price: 8.99,
-      priceListed: 8.99,
-      itemDesc: 'Worn cleanly',
-      itemStatusId: 3,
-      accountId: 2001,
-      listDate: '01/20/2021'
-    },
-    {
-      id: 4,
-      brand: 'Stradavarius',
-      gender: 'N/A',
-      itemName: 'Violin',
-      itemTypeId: 7,
-      price: 560000.99,
-      priceListed: 600000.00,
-      itemDesc: 'Stored in a cool, dry environment. Rarely played. Family heirloom, but need gambling money',
-      itemStatusId: 7,
-      accountId: 2001,
-      listDate: '07/22/2021'
-    },
-    {
-      id: 5,
-      brand: 'Stradavarius',
-      gender: 'N/A',
-      itemName: 'Violin',
-      itemTypeId: 7,
-      price: 560000.99,
-      priceListed: 600000.00,
-      itemDesc: 'Stored in a cool, dry environment. Rarely played. Family heirloom, but need gambling money',
-      itemStatusId: 7,
-      accountId: 2001,
-      listDate: '07/22/2021'
-    },
-    {
-      id: 6,
-      brand: 'Stradavarius',
-      gender: 'N/A',
-      itemName: 'Violin',
-      itemTypeId: 7,
-      price: 560000.99,
-      priceListed: 600000.00,
-      itemDesc: 'Stored in a cool, dry environment. Rarely played. Family heirloom, but need gambling money',
-      itemStatusId: 7,
-      accountId: 2001,
-      listDate: '07/22/2021'
-    },
-  ])
+  const fetchInventory = (token) => {
+    try {
+      const resp = axios.get("http://localhost:8080/items/all", {
+        headers: {
+          'Content-Type': "application/json",
+          'Accept': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': `Bearer ${token}`
+        }
+      }).then((resp) => {
+        console.log(resp);
+        setInventory(resp.data);
+      })
+    }catch(e) {
+      console.error(e);
+    }
+  }
 
-  const [brands, setBrands] = useState ([ 
-    {
-      id: 1,
-      brandDesc: 'J.Crew',
-      itemTypeId: 3,
-      accountId: 2001
-    },
-    {
-      id: 2,
-      brandDesc: 'Woolrich',
-      itemTypeId: 3,
-      accountId: 2001
-    },
-    {
-      id: 3,
-      brandDesc: 'Fender',
-      itemTypeId: 7,
-      accountId: 2001
-    },
-    {
-      id: 4,
-      brandDesc: 'Gucci',
-      itemTypeId: 3,
-      accountId: 2001
-    },
-    {
-      id: 5,
-      brandDesc: 'Samsung',
-      itemTypeId: 1,
-      accountId: 2001
-    },
-  ])
+  const fetchBrands = (token) => {
+    try {
+      const resp = axios.get("http://localhost:8080/brands/all", {
+        headers: {
+          'Content-Type': "application/json",
+          'Accept': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': `Bearer ${token}`
+        }
+      }).then((resp) => {
+        console.log(resp);
+        setBrands(resp.data);
+      })
+    }catch(e) {
+      console.error(e);
+    }
+  }
+
+  const addItem = async (e, item) => {
+    e.preventDefault();
+    const user = JSON.parse(localStorage.getItem('user'))
+    try{
+      await axios.post('http://localhost:8080/items/add', JSON.stringify(item.item), {
+        headers: { 
+          'Content-Type': "application/json",
+          'Accept': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': `Bearer ${user.token}`
+         },
+      }).then((resp) => {
+        console.log('Success!');
+        console.log(resp.data.itemId);
+        setInventory([...inventory], resp.data)
+      })
+    }catch(e){
+      console.error(e);
+    }
+    
+  }
+
+
+  /* temporary data for layout */
+  const [inventory, setInventory] = useState([])
+
+  const [brands, setBrands] = useState ([])
 
   const [history, setHistory] = useState ([
 
@@ -217,28 +169,6 @@ function App() {
       }, 1500)
     })
 
-  }
-
-  const addItem = async (e, item) => {
-    e.preventDefault();
-    const user = JSON.parse(localStorage.getItem('user'))
-    try{
-      await axios.post('http://localhost:8080/items/add', JSON.stringify(item.item), {
-        headers: { 
-          'Content-Type': "application/json",
-          'Accept': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Authorization': `Bearer ${user.token}`
-         },
-      }).then((resp) => {
-        console.log('Success!');
-        console.log(resp.data.itemId);
-        setInventory([...inventory], resp.data)
-      })
-    }catch(e){
-      console.error(e);
-    }
-    
   }
 
   return (
