@@ -10,6 +10,7 @@ import '../src/style/History.css'
 import '../src/style/Modal.css'
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 
 import Home from './components/home/Home'
 import FullItemView from './views/FullItemView'
@@ -18,12 +19,9 @@ import HistoryView from './views/HistoryView'
 import AddItemModal from './components/application/AddItemModal'
 import AddBrandModal from './components/application/AddNewBrandModal'
 
-import { Provider } from 'react';
-
 function App() {
 
-  /* Authentication */
-
+  const dispatch = useDispatch();
 
   // Will allow you to refrsh the page while keeping user logged in
   // Once current user is set, retrieves inventory, brand and history
@@ -32,45 +30,24 @@ function App() {
     if(loggedInUser) {
       const currUser = loggedInUser
       console.log(JSON.parse(currUser).token)
-      setCurrentUser(currUser);
+      dispatch({ type: 'login', payload: JSON.parse(currUser)})
       fetchInventory(JSON.parse(currUser).token);
       fetchBrands(JSON.parse(currUser).token);
       fetchHistory(JSON.parse(currUser).token);
     }
-  }, [])
+  }, [])  
 
-  const [currentUser, setCurrentUser] = useState(
-    {
-      username: '',
-      token: ''
-    }
-  )
+  const username = useSelector(state => state.username)
+  const token = useSelector(state => state.token);
+
+  const currentUser = {
+    username,
+    token 
+  }
   
   const [user, setUser] = useState({name: '', email: ''});
   const [error, setError] = useState('');
   
-
-  const Login = async (loginDetails) => {
-    try {
-      const resp = await axios.post("http://localhost:8080/login", JSON.stringify(loginDetails), {
-        headers: { 
-          'Content-Type': "application/json",
-          'Accept': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-         },
-      }).then (resp => {
-        const currUser = {
-          username: loginDetails.username,
-          token: resp.data.token
-        }
-        setCurrentUser( currUser )
-        localStorage.setItem('user', JSON.stringify(currUser))
-        setLoading({loading: true})
-      })
-    }catch(e) {
-      console.error(e.message);
-    }
-  }
 
   const Logout = () => {
     const user = {
@@ -78,7 +55,7 @@ function App() {
       token: ''
     }
     localStorage.removeItem('user')
-    setCurrentUser(user);
+    dispatch({ type: 'logout' })
   }
 
   const fetchInventory = (token) => {
@@ -221,7 +198,7 @@ function App() {
          </div>
            ) : (
         
-            <LoginForm Login={ Login } error={ error } />
+            <LoginForm error={ error } />
           )}
       </div>
     </BrowserRouter>

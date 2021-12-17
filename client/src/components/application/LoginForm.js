@@ -1,6 +1,33 @@
 import React, { useState } from 'react'
+import axios from 'axios'
+import { useDispatch } from 'react-redux'
 
-function LoginForm ({ Login, error }) {
+
+function LoginForm ({ error }) {
+
+    const dispatch = useDispatch();
+
+    const Login = async (loginDetails) => {
+        try {
+          const resp = await axios.post("http://localhost:8080/login", JSON.stringify(loginDetails), {
+            headers: { 
+              'Content-Type': "application/json",
+              'Accept': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+             },
+          }).then (resp => {
+            const currUser = {
+              username: loginDetails.username,
+              token: resp.data.token
+            }
+            dispatch({ type: 'login', payload: currUser })
+            localStorage.setItem('user', JSON.stringify(currUser))
+          })
+        }catch(e) {
+          console.error(e.message);
+        }
+      }
+
     const [details, setDetails] = useState({username: "", password: ""});
 
     const submitHandler = e => {
