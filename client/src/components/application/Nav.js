@@ -1,9 +1,23 @@
 import Logo from '../../resources/logo.png'
 import { useNavigate  } from 'react-router'
+import { useDispatch } from 'react-redux'
 
-const NavPrimary = ({ username, logout, history, setShowModal }) => {
+const NavPrimary = ({ username, history, setShowModal }) => {
+
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
+  
+  const logout = () => {
+    const user = {
+      username: 'test',
+      token: 'test'
+    }
+    dispatch({ type: 'logout', payload: user })
+    localStorage.removeItem('user')
+    console.log()
+  }
+
   
     return (
       <div className="navbar">

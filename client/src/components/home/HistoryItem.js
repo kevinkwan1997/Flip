@@ -1,8 +1,8 @@
-const HistoryItem = ({ soldItem }) => {
+const HistoryItem = () => {
     return (
         <div className="history-item">
-            <h4>{ soldItem.itemName }</h4>
-            <span>{ soldItem.itemPriceSold }</span>
+            <h4></h4>
+            <span></span>
         </div>
     )
 }

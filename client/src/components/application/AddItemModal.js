@@ -1,6 +1,6 @@
 import { React, useState } from 'react'
 
-const AddItemModal = ({ addItem, setShowModal }) => {
+const AddItemModal = ({ }) => {
     const [item, setItem] = useState({
         item:{ 
             brand: '',
@@ -100,7 +100,7 @@ const AddItemModal = ({ addItem, setShowModal }) => {
 
     return (
         <div className="add-item-modal">
-            <button className="close-form" onClick={() => setShowModal(false)}> X </button>
+            <button className="close-form"> X </button>
             <form action="" className="add-item-form" name="form">
                 <label htmlFor="name" className='label'>Name</label>
                 <input type="text" name='name' className='add-form-input' value={item.itemName} onChange={(e) => handleName(e) } />
@@ -129,7 +129,7 @@ const AddItemModal = ({ addItem, setShowModal }) => {
                 <input type="text" name='name' className='add-form-input' value={item.itemDesc} onChange={(e) => handleDesc(e) } />
                 <label htmlFor="price" className='label'>List Date</label>
                 <input type="date" name='name' className='add-form-input' value={item.listDate} onChange={(e) => handleDate(e) } />
-                <input type="submit" htmlFor="form" onClick={(e) => addItem(e, item)}></input>
+                <input type="submit" htmlFor="form"></input>
             </form>
         </div>
     )

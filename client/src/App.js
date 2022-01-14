@@ -1,7 +1,7 @@
 import Nav from './components/application/Nav'
 import LoginForm from './components/application/LoginForm'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Component } from 'react'
 import '../src/style/custom.scss'
 import '../src/style/App.css'
 import '../src/style/Inventory.css'
@@ -10,7 +10,7 @@ import '../src/style/History.css'
 import '../src/style/Modal.css'
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, connect } from 'react-redux'
 
 import Home from './components/home/Home'
 import FullItemView from './views/FullItemView'
@@ -19,213 +19,78 @@ import HistoryView from './views/HistoryView'
 import AddItemModal from './components/application/AddItemModal'
 import AddBrandModal from './components/application/AddNewBrandModal'
 
-function App() {
-
-  const dispatch = useDispatch();
-
-  // Will allow you to refrsh the page while keeping user logged in
-  // Once current user is set, retrieves inventory, brand and history
-  useEffect(() => {
-    const loggedInUser = localStorage.getItem('user');
-    if(loggedInUser) {
-      const currUser = loggedInUser
-      console.log(JSON.parse(currUser).token)
-      dispatch({ type: 'login', payload: JSON.parse(currUser)})
-      fetchInventory(JSON.parse(currUser).token);
-      fetchBrands(JSON.parse(currUser).token);
-      fetchHistory(JSON.parse(currUser).token);
+const mapStateToProps = (state) => {
+    return {
+      loggedIn: state.loggedIn
     }
-  }, [])  
-
-  const username = useSelector(state => state.username)
-  const token = useSelector(state => state.token);
-
-  const currentUser = {
-    username,
-    token 
-  }
-  
-  const [user, setUser] = useState({name: '', email: ''});
-  const [error, setError] = useState('');
-  
-
-  const Logout = () => {
-    const user = {
-      username: '',
-      token: ''
-    }
-    localStorage.removeItem('user')
-    dispatch({ type: 'logout' })
-  }
-
-  const fetchInventory = (token) => {
-    try {
-      const resp = axios.get("http://localhost:8080/items/all", {
-        headers: {
-          'Content-Type': "application/json",
-          'Accept': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Authorization': `Bearer ${token}`
-        }
-      }).then((resp) => {
-        console.log(resp);
-        setInventory(resp.data);
-      })
-    }catch(e) {
-      console.error(e);
-    }
-  }
-
-  const fetchBrands = (token) => {
-    try {
-      const resp = axios.get("http://localhost:8080/brands/all", {
-        headers: {
-          'Content-Type': "application/json",
-          'Accept': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Authorization': `Bearer ${token}`
-        }
-      }).then((resp) => {
-        console.log(resp);
-        setBrands(resp.data);
-      })
-    }catch(e) {
-      console.error(e);
-    }
-  }
-
-  const fetchHistory = (token) => {
-    try {
-      const resp = axios.get("http://localhost:8080/history", {
-        headers: {
-          'Content-Type': "application/json",
-          'Accept': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Authorization': `Bearer ${token}`
-        }
-      }).then((resp) => {
-        console.log(resp);
-        setHistory(resp.data);
-      })
-    }catch(e) {
-      console.error(e);
-    }
-  }
-
-  const addItem = async (e, item) => {
-    e.preventDefault();
-    const user = JSON.parse(localStorage.getItem('user'))
-    try{
-      await axios.post('http://localhost:8080/items/add', JSON.stringify(item.item), {
-        headers: { 
-          'Content-Type': "application/json",
-          'Accept': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Authorization': `Bearer ${user.token}`
-         },
-      }).then((resp) => {
-        console.log('Success!');
-        console.log(resp.data.itemId);
-        setInventory([...inventory], resp.data)
-      })
-    }catch(e){
-      console.error(e);
-    }
-    
-  }
-
-
-  /* temporary data for layout */
-  const [inventory, setInventory] = useState([])
-
-  const [brands, setBrands] = useState ([])
-
-  const [history, setHistory] = useState ([
-
-  ])
-
-  const [metrics, setMetrics] = useState ([
-    {
-      totalItemsSold: 0,
-      totalSales: 0,
-    }
-  ])
-
-  // Loading screen 
-
-  const [loading, setLoading] = useState({
-    loading: false
-  })
-
-  const [showModal, setShowModal] = useState(false)
-  
-  const showLoadingScreen = () => {
-    this.useEffect(() => {
-      const timer = setTimeout(() => {
-        setLoading({loading: false})
-      }, 1500)
-    })
-
-  }
-
-  return (
-    <BrowserRouter >
-      <div className="wrapper">
-      {(currentUser.username !== '') ? (
-        <div className="app-wrapper">
-        <Nav username={ currentUser.username } logout={ Logout } setShowModal={ setShowModal } /> 
-        {(showModal) ? (
-          <AddItemModal addItem={ addItem } setShowModal={ setShowModal } />
-        ) : (
-          null
-        )}
-        <Routes>
-          <Route 
-            path="/" 
-            element={
-              <Home 
-                inventory={ inventory } 
-                brands={ brands } 
-                history={ history } 
-                metrics={ metrics } 
-                setInventory={ setInventory }
-                setHistory={ setHistory } />} />
-          <Route path="/inventory" element={<FullItemView inventory={ inventory } />} />
-          <Route path="/brands" element={<BrandView brands={ brands } />} /> 
-          <Route path="/history" element={<HistoryView history={ history } />} /> 
-        </Routes>
-
-         </div>
-           ) : (
-        
-            <LoginForm error={ error } />
-          )}
-      </div>
-    </BrowserRouter>
-
-
-    /*{/* <div className="App">
-      <div className="wrapper">
-      {(currentUser.username !== '') ? (
-        <div className="app-wrapper">
-          <Nav username={ currentUser.username } logout={ Logout }/> 
-        <div className="app-container">
-          <Inventory inventory={ inventory } deleteItem={ deleteItem } markSold={ markSold }/>
-          <Brands brands={ brands } />
-          <History history={ history }/>
-          <Metrics getTotal={ getTotal } getOtherMetrics={ getOtherMetrics } />
-        </div>
-
-      </div>
-      ) : (
-        
-        <LoginForm Login={ Login } error={ error } />
-      )}
-
-      </div>
-    // </div> *//*} */
-
-  );
 }
 
-export default App;
+const temp = false;
+const showModal= false;
+
+class App extends Component {
+
+
+  render() {
+    return (
+      <BrowserRouter >
+
+        <div className="wrapper">
+        {(true) ? (
+          <div className="app-wrapper">
+          <Nav/> 
+          {(showModal) ? (
+            <AddItemModal />
+          ) : (
+            null
+          )}
+          <Routes>
+            <Route 
+              path="/" 
+              element={
+                <Home />} />
+            <Route path="/inventory" element={<FullItemView/>} />
+            <Route path="/brands" element={<BrandView/>} /> 
+            <Route path="/history" element={<HistoryView />} /> 
+          </Routes>
+  
+           </div>
+             ) : (
+              <div className="ha">
+                              <LoginForm/>
+
+              </div>
+
+
+            )}
+        </div>
+      </BrowserRouter>
+  
+  
+      /*{/* <div className="App">
+        <div className="wrapper">
+        {(currentUser.username !== '') ? (
+          <div className="app-wrapper">
+            <Nav username={ currentUser.username } logout={ Logout }/> 
+          <div className="app-container">
+            <Inventory inventory={ inventory } deleteItem={ deleteItem } markSold={ markSold }/>
+            <Brands brands={ brands } />
+            <History history={ history }/>
+            <Metrics getTotal={ getTotal } getOtherMetrics={ getOtherMetrics } />
+          </div>
+  
+        </div>
+        ) : (
+          
+          <LoginForm Login={ Login } error={ error } />
+        )}
+  
+        </div>
+      // </div> *//*} */
+  
+    );
+  }
+  }
+
+
+export default connect(mapStateToProps)(App);

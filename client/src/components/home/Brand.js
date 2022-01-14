@@ -1,10 +1,10 @@
 import LogoService from '../../LogoService'
 
-const Brand = ({ brand }) => {
+const Brand = ({ }) => {
 
     return (
         <div className="brand">
-            <img className="brand-img" src= { LogoService.fetchLogo(brand) } alt={ brand.brandDesc } />
+            <img className="brand-img"/>
         </div>
     )
 }

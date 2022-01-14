@@ -1,9 +1,9 @@
-const Metrics = ({ getTotal, getOtherMetrics }) => {
+const Metrics = ({ }) => {
     return (
         <div className='metrics'>
-            <h3>Total Sales: ${ getTotal() }</h3>
-            <h4>Items Listed: { getOtherMetrics().listedTotal }</h4>
-            <h4>Items Sold: { getOtherMetrics().soldTotal }</h4>
+            <h3>Total Sales:</h3>
+            <h4>Items Listed: </h4>
+            <h4>Items Sold:</h4>
         </div>
     )
 }
