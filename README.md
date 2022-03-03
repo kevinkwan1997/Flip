@@ -4,7 +4,7 @@ Flip is an application that allows you to log your thrifts and flips. It allows 
 
 ## Project Status
 
-Back end is fully functional, but the front end is not yet fully functional. Currently using dummy data to complete layout before making API calls
+Back end is fully functional, front end is being rebuilt with Angular and a more modern CSS styling
 
 ## Running locally
 
